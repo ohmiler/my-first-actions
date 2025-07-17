@@ -1,17 +1,26 @@
-name: My First Workflow
+name: NodeJS CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Use NodeJS 20.x
+        uses: actions/setup-node@v4 
+        with:
+          node-version: '20.x'
+          cache: 'npm'
 
-      - name: Say Hello
-        run: echo "Hello, Github Actions! from ${{ github.repository }}"
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run a simple NodeJS script
+        run: |
+          node -e 'console.log("NodeJS script executed successfully");'
